@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const { autoUpdater } = require('electron-updater');
+const log = require('electron-log')
 
 let mainWindow;
 
@@ -37,10 +38,12 @@ app.on('activate', function () {
 });
 
 ipcMain.on('app_version', (event) => {
+  log.info(app.getVersion());
   event.sender.send('app_version', { version: app.getVersion() });
 });
 
 autoUpdater.on('update-available', () => {
+  log.info('업데이트가 가능합니다.');
   mainWindow.webContents.send('update_available');
 });
 
